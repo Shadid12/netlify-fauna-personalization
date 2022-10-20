@@ -9,12 +9,27 @@ export async function getStaticProps() {
   };
 }
 
-export default function Marketing({message}) {
+export default function Marketing({message, promotion}) {
+  console.log("promotion ===>>>>", promotion );
   return (
-    <div>
+    <div className={styles.container}>
       <h1>Marketing Page</h1>
       <p id="message">{message}</p>
-      <Link href="/"><a>Home</a></Link>
+      <div>
+        {promotion ? (
+          <div className={styles.wrap}>
+            { promotion.map((promo) => (
+              <div key={promo.ref.id} className={styles.item}>
+                <h2>{promo.data.title}</h2>
+                <img className={styles.img} src={promo.data.img} />
+              </div>
+            ))}
+          </div>
+        ) : <p>No promo for me</p>}
+      </div>
+      <div className={styles.btnWrap}>
+        <Link href="/"><a className={styles.link}>Home</a></Link>
+      </div>
     </div>
   )
 }

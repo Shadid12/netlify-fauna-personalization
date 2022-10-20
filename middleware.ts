@@ -1,5 +1,7 @@
 import type { NextRequest } from "next/server";
 import { MiddlewareRequest } from "@netlify/next";
+import { getClient, q } from "./db";
+
 
 
 export async function middleware(nextRequest: NextRequest) {
@@ -17,6 +19,16 @@ export async function middleware(nextRequest: NextRequest) {
     // Transform the response HTML and props
     response.replaceText("#message", message);
     response.setPageProp("message", message);
+
+    // Send Customized Promotions
+    const client = getClient(nextRequest?.geo?.country);
+    const promotionResponse = await client.query(
+      q.Map(
+        q.Paginate(q.Documents(q.Collection('Promotion'))),
+        q.Lambda(x => q.Get(x))
+      )
+    ) as any;
+    response.setPageProp("promotion", promotionResponse.data);
 
     return response;
   }
