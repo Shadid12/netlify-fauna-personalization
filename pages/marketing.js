@@ -10,7 +10,6 @@ export async function getStaticProps() {
 }
 
 export default function Marketing({message, promotion}) {
-  console.log("promotion ===>>>>", promotion );
   return (
     <div className={styles.container}>
       <h1>Marketing Page</h1>
